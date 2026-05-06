@@ -1,0 +1,54 @@
+#:kivy 2.1.0
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 24
+        spacing: 16
+
+        BoxLayout:
+            size_hint_y: 0.3
+            Label:
+                text: 'Factory Monitor'
+                font_size: 28
+                bold: True
+                color: 0.2, 0.2, 0.3, 1
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 12
+            pos_hint: {'center_y': 0.5}
+
+            Label:
+                text: 'Вход в систему'
+                font_size: 20
+                bold: True
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            TextInput:
+                id: email_input
+                hint_text: 'Email'
+                size_hint_y: None
+                height: 48
+            TextInput:
+                id: password_input
+                hint_text: 'Пароль'
+                password: True
+                size_hint_y: None
+                height: 48
+
+            Button:
+                text: 'Войти'
+                size_hint_y: None
+                height: 48
+                background_color: 0.2, 0.78, 0.35, 1
+                on_press: root.do_login()
+
+        BoxLayout:
+            size_hint_y: 0.1
+            Button:
+                text: '⚙ Настройки'
+                size_hint_x: 0.5
+                pos_hint: {'center_x': 0.5}
+                on_press: root.manager.current = 'settings'

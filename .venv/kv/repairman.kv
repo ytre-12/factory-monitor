@@ -1,0 +1,151 @@
+<RepairmanScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.99, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [14, 12, 14, 12]
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: 44
+            spacing: 8
+
+            Label:
+                text: 'Ремонтник'
+                bold: True
+                color: 0.1, 0.46, 0.23, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+
+            Button:
+                text: 'Обновить'
+                size_hint_x: None
+                width: 84
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.refresh()
+
+            Button:
+                text: 'История'
+                size_hint_x: None
+                width: 74
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.go_to_history()
+
+            Button:
+                text: 'Выход'
+                size_hint_x: None
+                width: 62
+                background_normal: ''
+                background_color: 0.13, 0.52, 0.24, 1
+                color: 1, 1, 1, 1
+                on_press: root.logout()
+
+        Label:
+            text: root.error_message
+            color: 0.85, 0.18, 0.18, 1
+            text_size: self.width - 12, None
+            halign: 'left'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 4 if root.error_message else 0
+
+        Label:
+            text: 'Обновление автоматически: раз в 5 минут'
+            color: 0.34, 0.44, 0.37, 1
+            text_size: self.width - 12, None
+            halign: 'left'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 2
+
+        RecycleView:
+            id: breakdowns_rv
+            viewclass: 'BreakdownCard'
+            data: [{'request_id': b.get('id', 0), 'station_name': b.get('equipment_name', 'Неизвестно'), 'description': b.get('description', ''), 'is_empty': False} for b in root.breakdowns] if root.breakdowns else [{'request_id': 0, 'station_name': 'Нет активных поломок', 'description': '', 'is_empty': True}]
+            RecycleBoxLayout:
+                default_size: None, dp(138)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 8
+                orientation: 'vertical'
+
+        Label:
+            text: 'Загрузка...' if root.loading else ''
+            size_hint_y: None
+            height: 22 if root.loading else 0
+            color: 0.36, 0.43, 0.37, 1
+
+        Button:
+            text: 'Настройки'
+            size_hint_y: None
+            height: 42
+            background_normal: ''
+            background_color: 0.15, 0.68, 0.31, 1
+            color: 1, 1, 1, 1
+            on_press: root.go_to_settings()
+
+<BreakdownCard@BoxLayout>:
+    orientation: 'vertical'
+    padding: [10, 10, 10, 10]
+    spacing: 8
+    request_id: 0
+    station_name: ''
+    description: ''
+    is_empty: False
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10, 10, 10, 10]
+
+    Label:
+        text: root.station_name
+        bold: True
+        color: 0.16, 0.22, 0.18, 1
+        text_size: self.width - 8, None
+        halign: 'left'
+        valign: 'middle'
+        size_hint_y: None
+        height: self.texture_size[1] + 2
+
+    Label:
+        text: root.description if not root.is_empty else 'Новые заявки появятся здесь'
+        color: 0.31, 0.4, 0.34, 1
+        text_size: self.width - 8, None
+        halign: 'left'
+        valign: 'top'
+        size_hint_y: None
+        height: self.texture_size[1] + 2
+
+    BoxLayout:
+        size_hint_y: None
+        height: 36 if not root.is_empty else 0
+        spacing: 8
+
+        Button:
+            text: 'Взять'
+            background_normal: ''
+            background_color: 0.15, 0.68, 0.31, 1
+            color: 1, 1, 1, 1
+            on_press: app.root.get_screen('repairman').assign_breakdown(root.request_id)
+
+        Button:
+            text: 'Готово'
+            background_normal: ''
+            background_color: 0.19, 0.62, 0.29, 1
+            color: 1, 1, 1, 1
+            on_press: app.root.get_screen('repairman').fix_breakdown(root.request_id, root.station_name)

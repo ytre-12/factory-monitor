@@ -1,0 +1,112 @@
+<MaterialsScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.99, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [14, 12, 14, 12]
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: 44
+            spacing: 8
+
+            Button:
+                text: 'Назад'
+                size_hint_x: None
+                width: 68
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.go_back()
+
+            Label:
+                text: 'Материалы'
+                bold: True
+                color: 0.1, 0.46, 0.23, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+
+            Button:
+                text: 'Обновить'
+                size_hint_x: None
+                width: 84
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.refresh()
+
+        Label:
+            text: root.error_message
+            color: 0.85, 0.18, 0.18, 1
+            text_size: self.width - 12, None
+            halign: 'left'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 4 if root.error_message else 0
+
+        Label:
+            text: 'Выбранный материал: ' + (root.selected_material_name if root.selected_material_name else 'не выбран')
+            color: 0.34, 0.44, 0.37, 1
+            text_size: self.width - 12, None
+            halign: 'left'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 2
+
+        RecycleView:
+            id: materials_rv
+            viewclass: 'MaterialCard'
+            data: [{'material_id': m.get('id', 0), 'material_name': m.get('name', ''), 'unit': m.get('unit', '')} for m in root.materials]
+            RecycleBoxLayout:
+                default_size: None, dp(52)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 6
+                orientation: 'vertical'
+
+        BoxLayout:
+            size_hint_y: None
+            height: 44
+            spacing: 8
+
+            TextInput:
+                hint_text: 'Количество'
+                text: root.quantity
+                input_filter: 'int'
+                multiline: False
+                background_normal: ''
+                background_active: ''
+                background_color: 1, 1, 1, 1
+                foreground_color: 0.14, 0.2, 0.16, 1
+                on_text: root.quantity = self.text
+
+            Button:
+                text: 'Отправить'
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.send_request()
+
+        Label:
+            text: 'Загрузка...' if root.loading else ''
+            size_hint_y: None
+            height: 22 if root.loading else 0
+            color: 0.36, 0.43, 0.37, 1
+
+<MaterialCard@Button>:
+    material_id: 0
+    material_name: ''
+    unit: ''
+    text: f'{root.material_name} ({root.unit})'
+    background_normal: ''
+    background_color: 1, 1, 1, 1
+    color: 0.18, 0.25, 0.2, 1
+    on_press: app.root.get_screen('materials').select_material(root.material_id, root.material_name)
