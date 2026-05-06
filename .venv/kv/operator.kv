@@ -1,0 +1,152 @@
+<OperatorScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.99, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [14, 12, 14, 12]
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: 44
+            spacing: 8
+
+            Label:
+                text: 'Оператор'
+                bold: True
+                color: 0.1, 0.46, 0.23, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+
+            Button:
+                text: 'Обновить'
+                size_hint_x: None
+                width: 84
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.load_station_data()
+
+            Button:
+                text: 'История'
+                size_hint_x: None
+                width: 74
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.go_to_history()
+
+            Button:
+                text: 'Выход'
+                size_hint_x: None
+                width: 62
+                background_normal: ''
+                background_color: 0.13, 0.52, 0.24, 1
+                color: 1, 1, 1, 1
+                on_press: root.logout()
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: 170
+            spacing: 10
+            padding: [14, 14, 14, 14]
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10, 10, 10, 10]
+
+            Label:
+                text: root.station_name
+                bold: True
+                color: 0.17, 0.24, 0.19, 1
+                text_size: self.width - 6, None
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1] + 4
+
+            Label:
+                text: 'Статус: ' + root.status_text
+                color: root.status_color
+                bold: True
+                text_size: self.width - 6, None
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1] + 4
+
+            Label:
+                text: 'Станок не назначен' if not root.has_station else ''
+                color: 0.87, 0.36, 0.07, 1
+                text_size: self.width - 6, None
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1] + 4 if not root.has_station else 0
+
+            Label:
+                text: 'Обновление статуса: раз в 5 минут'
+                color: 0.34, 0.44, 0.37, 1
+                text_size: self.width - 6, None
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1] + 2
+
+        GridLayout:
+            cols: 2
+            spacing: 10
+            disabled: not root.has_station
+
+            Button:
+                text: 'Запустить'
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.send_start()
+
+            Button:
+                text: 'Остановить'
+                background_normal: ''
+                background_color: 0.19, 0.62, 0.29, 1
+                color: 1, 1, 1, 1
+                on_press: root.send_stop()
+
+            Button:
+                text: 'Поломка'
+                background_normal: ''
+                background_color: 0.22, 0.56, 0.28, 1
+                color: 1, 1, 1, 1
+                on_press: root.send_breakdown()
+
+            Button:
+                text: 'Материалы'
+                background_normal: ''
+                background_color: 0.26, 0.52, 0.27, 1
+                color: 1, 1, 1, 1
+                on_press: root.open_materials()
+
+        Button:
+            text: 'Настройки'
+            size_hint_y: None
+            height: 42
+            background_normal: ''
+            background_color: 0.15, 0.68, 0.31, 1
+            color: 1, 1, 1, 1
+            on_press: root.go_to_settings()
+
+        Label:
+            text: 'Загрузка...' if root.is_loading else ''
+            size_hint_y: None
+            height: 22 if root.is_loading else 0
+            color: 0.36, 0.43, 0.37, 1

@@ -1,0 +1,91 @@
+<SettingsScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.99, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [14, 12, 14, 12]
+        spacing: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: 44
+            spacing: 8
+
+            Button:
+                text: 'Назад'
+                size_hint_x: None
+                width: 68
+                background_normal: ''
+                background_color: 0.15, 0.68, 0.31, 1
+                color: 1, 1, 1, 1
+                on_press: root.go_back()
+
+            Label:
+                text: 'Настройки'
+                bold: True
+                color: 0.1, 0.46, 0.23, 1
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 10
+            padding: [12, 12, 12, 12]
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10, 10, 10, 10]
+
+            Label:
+                text: 'Темная тема'
+                color: 0.18, 0.25, 0.2, 1
+                size_hint_y: None
+                height: 26
+
+            Switch:
+                active: root.is_dark_theme
+                size_hint_y: None
+                height: 34
+                on_active: root.toggle_theme()
+
+            Label:
+                text: 'Визуальная тема применяется сразу'
+                color: 0.34, 0.44, 0.37, 1
+                text_size: self.width - 8, None
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1] + 2
+
+        Button:
+            text: 'Очистить кэш'
+            size_hint_y: None
+            height: 42
+            background_normal: ''
+            background_color: 0.15, 0.68, 0.31, 1
+            color: 1, 1, 1, 1
+            on_press: root.clear_cache()
+
+        Button:
+            text: 'О приложении'
+            size_hint_y: None
+            height: 42
+            background_normal: ''
+            background_color: 0.19, 0.62, 0.29, 1
+            color: 1, 1, 1, 1
+            on_press: root.about()
+
+        Label:
+            text: 'Factory Monitor 1.0.0'
+            color: 0.34, 0.44, 0.37, 1
+            size_hint_y: None
+            height: 24

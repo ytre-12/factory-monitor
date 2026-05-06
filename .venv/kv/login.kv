@@ -1,0 +1,90 @@
+<LoginScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.96, 0.99, 0.97, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [20, 24, 20, 20]
+        spacing: 14
+
+        Label:
+            text: 'Factory Monitor'
+            size_hint_y: None
+            height: 44
+            font_size: 28
+            bold: True
+            color: 0.1, 0.46, 0.23, 1
+
+        Label:
+            text: 'Авторизация'
+            size_hint_y: None
+            height: 28
+            font_size: 18
+            color: 0.18, 0.25, 0.2, 1
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: 190
+            spacing: 10
+            padding: [14, 14, 14, 14]
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10, 10, 10, 10]
+
+            TextInput:
+                hint_text: 'Email'
+                text: root.email
+                on_text: root.email = self.text
+                multiline: False
+                size_hint_y: None
+                height: 42
+                background_normal: ''
+                background_active: ''
+                background_color: 0.94, 0.98, 0.95, 1
+                foreground_color: 0.14, 0.2, 0.16, 1
+                padding: [10, 10, 10, 10]
+
+            TextInput:
+                hint_text: 'Пароль'
+                password: True
+                text: root.password
+                on_text: root.password = self.text
+                multiline: False
+                size_hint_y: None
+                height: 42
+                background_normal: ''
+                background_active: ''
+                background_color: 0.94, 0.98, 0.95, 1
+                foreground_color: 0.14, 0.2, 0.16, 1
+                padding: [10, 10, 10, 10]
+
+            Label:
+                text: root.error_message
+                color: 0.85, 0.18, 0.18, 1
+                text_size: self.width - 8, None
+                halign: 'left'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1] + 4 if root.error_message else 0
+
+        Button:
+            text: 'Войти' if not root.loading else 'Вход...'
+            size_hint_y: None
+            height: 46
+            background_normal: ''
+            background_color: 0.15, 0.68, 0.31, 1
+            color: 1, 1, 1, 1
+            bold: True
+            disabled: root.loading
+            on_press: root.do_login()
+
+        Widget:
