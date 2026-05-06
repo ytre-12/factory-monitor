@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factory Monitor Desktop</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <div id="login-view" class="login-view">
+    <div class="login-card fade-in">
+      <img src="./ico.png" class="login-logo" alt="Factory Monitor">
+      <h1>Factory Monitor</h1>
+      <p class="subtitle">Вход в складскую систему</p>
+
+      <form id="login-form" class="login-form">
+        <label>
+          <span>Email</span>
+          <input id="login-email" type="email" autocomplete="username" required>
+        </label>
+        <label>
+          <span>Пароль</span>
+          <input id="login-password" type="password" autocomplete="current-password" required>
+        </label>
+        <label class="eula-checkbox-row">
+          <input id="login-eula-checkbox" type="checkbox" required>
+          <span>Я принимаю <a id="open-eula-link" href="#">Пользовательское соглашение</a></span>
+        </label>
+        <button id="login-submit" type="submit">Войти</button>
+      </form>
+
+      <p class="eula-footer-text">
+        Нажимая «Войти», вы автоматически принимаете<br>
+        <a id="open-eula-link-bottom" href="#">Пользовательское соглашение</a>
+      </p>
+
+      <div id="login-error" class="error-text"></div>
+    </div>
+  </div>
+
+  <div id="app-view" class="app-view hidden">
+    <!-- остальное без изменений -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="./ico.png" alt="logo">
+        <div>
+          <h2>Factory Monitor</h2>
+          <p>Склад на синявенской 11</p>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <button class="menu-item active" data-tab="dashboard">Главный экран</button>
+        <button class="menu-item" data-tab="warehouse">Склад</button>
+        <button class="menu-item" data-tab="requests">Заявки</button>
+        <button class="menu-item" data-tab="operations">Журнал операций</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div id="user-name" class="user-name"></div>
+        <button id="logout-btn" class="logout-btn">Выйти</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <h1 id="page-title">Главный экран</h1>
+        <div class="topbar-actions">
+          <button id="manual-refresh" class="green-btn">Обновить</button>
+          <span class="refresh-note">Автообновление: раз в 5 минут</span>
+        </div>
+      </header>
+
+      <section id="tab-dashboard" class="tab active">
+        <div class="cards-grid" id="dashboard-cards"></div>
+
+        <div class="panel-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Ожидающие поставки</h3>
+              <button id="refresh-supplies" class="tiny-btn">Обновить</button>
+            </div>
+            <div id="supplies-list" class="scroll-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Уведомления</h3>
+              <button id="mark-notifications-read" class="tiny-btn">Прочитать все</button>
+            </div>
+            <div id="notifications-list" class="scroll-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="tab-warehouse" class="tab">
+        <div class="toolbar">
+          <input id="warehouse-search" type="text" placeholder="Поиск по материалу или ячейке">
+          <label class="checkbox-row">
+            <input id="warehouse-low-only" type="checkbox">
+            <span>Только ниже минимального запаса</span>
+          </label>
+          <button id="warehouse-refresh" class="green-btn">Обновить</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Материал</th>
+                <th>Ед.</th>
+                <th>Кол-во</th>
+                <th>Мин. запас</th>
+                <th>Ячейка</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="warehouse-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-requests" class="tab">
+        <div class="toolbar">
+          <select id="requests-filter">
+            <option value="active">Активные заявки</option>
+            <option value="done">Выполненные заявки</option>
+            <option value="all">Все заявки</option>
+          </select>
+          <button id="requests-refresh" class="green-btn">Обновить</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Сотрудник</th>
+                <th>Оборудование</th>
+                <th>Материалы</th>
+                <th>Статус</th>
+                <th>Время</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="requests-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-operations" class="tab">
+        <div class="toolbar">
+          <select id="operations-type">
+            <option value="">Все операции</option>
+            <option value="receipt">Прием</option>
+            <option value="issue">Выдача</option>
+            <option value="writeoff">Списание</option>
+          </select>
+          <input id="operations-from" type="date">
+          <input id="operations-to" type="date">
+          <button id="operations-refresh" class="green-btn">Обновить</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Дата</th>
+                <th>Сотрудник</th>
+                <th>Тип</th>
+                <th>Материал</th>
+                <th>Количество</th>
+                <th>Ячейка</th>
+                <th>Комментарий</th>
+              </tr>
+            </thead>
+            <tbody id="operations-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Диалог складской операции -->
+  <dialog id="operation-dialog">
+    <form id="operation-form" method="dialog">
+      <h3 id="operation-title">Складская операция</h3>
+      <p id="operation-material-label"></p>
+      <label>
+        <span>Количество</span>
+        <input id="operation-quantity" type="number" min="0.01" step="0.01" required>
+      </label>
+      <label>
+        <span>Комментарий</span>
+        <input id="operation-comment" type="text" maxlength="200">
+      </label>
+      <menu>
+        <button type="button" id="operation-cancel">Отмена</button>
+        <button type="submit" id="operation-submit" class="green-btn">Подтвердить</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- Диалог пользовательского соглашения -->
+  <dialog id="eula-dialog">
+    <div id="eula-content">
+      <h2>Пользовательское соглашение</h2>
+      <p class="eula-updated">Последнее обновление: 6 мая 2026 г.</p>
+      <div id="eula-text" class="eula-scroll"></div>
+      <menu>
+        <button type="button" id="eula-close" class="green-btn">Закрыть</button>
+      </menu>
+    </div>
+  </dialog>
+
+  <script src="./renderer.js"></script>
+</body>
+
+</html>

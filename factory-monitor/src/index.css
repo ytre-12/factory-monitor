@@ -1,0 +1,69 @@
+:root {
+  --bg-main: #edf3ee;
+  --bg-side: #ffffff;
+  --bg-hover: #f2f8f3;
+  --surface: #ffffff;
+  --surface-soft: #f4faf5;
+  --line-soft: #dde9df;
+  --line-strong: #c8dacb;
+  --text-main: #1f3424;
+  --text-soft: #5f7263;
+  --brand: #27b54d;
+  --brand-dark: #1f8f3f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-main);
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+.page-title {
+  color: var(--text-main);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.page-subtitle {
+  color: var(--text-soft);
+  margin-top: 8px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.loading {
+  color: var(--text-soft);
+}
+
+.dark-theme {
+  --bg-main: #0f1911;
+  --bg-side: #121d14;
+  --bg-hover: #1b2a1f;
+  --surface: #162219;
+  --surface-soft: #1c2c20;
+  --line-soft: #233827;
+  --line-strong: #2d4b33;
+  --text-main: #d9f4e0;
+  --text-soft: #8fb296;
+  --brand: #34c759;
+  --brand-dark: #2ca84a;
+}

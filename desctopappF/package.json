@@ -1,0 +1,37 @@
+{
+  "name": "factory-desktop-warehouse",
+  "version": "1.0.0",
+  "description": "Desktop warehouse app for Factory Monitor",
+  "main": "main.js",
+  "author": "Factory Monitor Team",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.factorymonitor.warehouse",
+    "productName": "Factory Monitor",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "styles.css",
+      "ico.png",
+      "license.txt"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "ico.png"
+    }
+  },
+  "devDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}
